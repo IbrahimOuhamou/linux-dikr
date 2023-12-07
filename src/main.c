@@ -86,8 +86,6 @@ void dikr_list_select_list(GtkWidget* widget, gpointer data)
 
 
     GtkWidget* box_bottom = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-    //gtk_widget_set_valign(box_bottom, GTK_ALIGN_END);
-    //gtk_widget_set_halign(box_bottom, GTK_ALIGN_FILL);
     gtk_box_append(GTK_BOX(box), box_bottom);
 
     if(dikr_list_selected_id < (sizeof(dikr_list_morning) / sizeof(dikr_list_morning[0])))

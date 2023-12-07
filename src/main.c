@@ -51,6 +51,9 @@ void activate(GtkApplication* app, gpointer data)
 
 void dikr_list_menu(GtkWidget* widget, gpointer data)
 {
+
+    dikr_list_selected_id = 0;
+
     GtkWidget* box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_window_set_child(GTK_WINDOW(window), box);
 
@@ -87,14 +90,23 @@ void dikr_list_select_list(GtkWidget* widget, gpointer data)
     //gtk_widget_set_halign(box_bottom, GTK_ALIGN_FILL);
     gtk_box_append(GTK_BOX(box), box_bottom);
 
-    GtkWidget* button_dikr_list_select_next = gtk_button_new_with_label("<-");
-    g_signal_connect(button_dikr_list_select_next, "clicked", G_CALLBACK(dikr_list_select_next), NULL);
-    gtk_box_append(GTK_BOX(box_bottom), button_dikr_list_select_next);
+    if(dikr_list_selected_id < (sizeof(dikr_list_morning) / sizeof(dikr_list_morning[0])))
+    {
+        GtkWidget* button_dikr_list_select_next = gtk_button_new_with_label("<-");
+        g_signal_connect(button_dikr_list_select_next, "clicked", G_CALLBACK(dikr_list_select_next), NULL);
+        gtk_box_append(GTK_BOX(box_bottom), button_dikr_list_select_next);
+    }
 
-    GtkWidget* button_dikr_list_select_prev = gtk_button_new_with_label("->");
-    g_signal_connect(button_dikr_list_select_prev, "clicked", G_CALLBACK(dikr_list_select_prev), NULL);
-    gtk_box_append(GTK_BOX(box_bottom), button_dikr_list_select_prev);
+    GtkWidget* button_dikr_list_select_home = gtk_button_new_with_label("HOME");
+    g_signal_connect(button_dikr_list_select_home, "clicked", G_CALLBACK(dikr_list_menu), NULL);
+    gtk_box_append(GTK_BOX(box_bottom), button_dikr_list_select_home);
 
+    if(0 < dikr_list_selected_id)
+    {
+        GtkWidget* button_dikr_list_select_prev = gtk_button_new_with_label("->");
+        g_signal_connect(button_dikr_list_select_prev, "clicked", G_CALLBACK(dikr_list_select_prev), NULL);
+        gtk_box_append(GTK_BOX(box_bottom), button_dikr_list_select_prev);
+    }
     gtk_window_set_child(GTK_WINDOW(window), box);
 }
 
@@ -119,3 +131,4 @@ void dikr_list_select_prev(GtkWidget* widget, gpointer data)
     dikr_list_selected_id-=1;
     dikr_list_select_list(NULL, NULL);
 }
+

@@ -51,7 +51,6 @@ void activate(GtkApplication* app, gpointer data)
 
 void dikr_list_menu(GtkWidget* widget, gpointer data)
 {
-
     dikr_list_selected_id = 0;
 
     GtkWidget* box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
@@ -74,13 +73,17 @@ void dikr_list_select_list(GtkWidget* widget, gpointer data)
         dikr_list_menu(NULL, NULL);
         return;
     }
+    if (NULL != data)
+    {
+        dikr_list_selected_list = data;
+    }
     //for now will select morning dikr only
     GtkWidget* box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
     gtk_widget_set_valign(box, GTK_ALIGN_FILL);
     gtk_widget_set_halign(box, GTK_ALIGN_FILL);
-    //gtk_box_set_homogeneous(GTK_BOX(box), TRUE);
+    gtk_box_set_homogeneous(GTK_BOX(box), TRUE);
 
-    GtkWidget* label = gtk_label_new(dikr_list_morning[dikr_list_selected_id]);
+    GtkWidget* label = gtk_label_new(dikr_list_selected_list[dikr_list_selected_id]);
     gtk_box_append(GTK_BOX(box), label);
     gtk_label_set_wrap(GTK_LABEL(label), TRUE);
 
@@ -88,7 +91,8 @@ void dikr_list_select_list(GtkWidget* widget, gpointer data)
     GtkWidget* box_bottom = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_box_append(GTK_BOX(box), box_bottom);
 
-    if(dikr_list_selected_id < (sizeof(dikr_list_morning) / sizeof(dikr_list_morning[0])))
+    printf("%d : %lu\n", dikr_list_selected_id, sizeof(dikr_list_morning) / sizeof(dikr_list_morning[0]));
+    if(dikr_list_selected_id+1 <= (sizeof(dikr_list_morning) / sizeof(dikr_list_morning[0])-1))
     {
         GtkWidget* button_dikr_list_select_next = gtk_button_new_with_label("<-");
         g_signal_connect(button_dikr_list_select_next, "clicked", G_CALLBACK(dikr_list_select_next), NULL);
